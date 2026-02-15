@@ -1,15 +1,16 @@
 import { schedules, logger, metadata, retry } from "@trigger.dev/sdk/v3";
-import { z } from "zod";
+import { sendAlert } from "../services/slack";
 
 export const uptimeMonitor = schedules.task({
   id: "uptime-monitor",
-  cron: "*/5 * * * *", // Toutes les 5 minutes
+  cron: "0 * * * *", // Toutes les heures
   maxDuration: 60,
   retry: {
     maxAttempts: 1, // Pas de retry pour un health check
   },
   run: async (payload) => {
     const url = "https://www.tiple.io";
+    const alertChannel = process.env.SLACK_ALERTS_CHANNEL ?? "#alerts";
 
     logger.info("Uptime check started", { url });
     metadata.set("status", "checking");
@@ -26,7 +27,7 @@ export const uptimeMonitor = schedules.task({
           method: "GET",
           retry: {
             maxAttempts: 2,
-            condition: (response, error) => {
+            condition: (response) => {
               return (response?.status ?? 0) >= 500;
             },
           },
@@ -55,8 +56,8 @@ export const uptimeMonitor = schedules.task({
       }
     });
 
-    // Evaluate result
-    await logger.trace("evaluate-status", async (span) => {
+    // Evaluate result and notify
+    await logger.trace("evaluate-and-notify", async (span) => {
       span.setAttribute("site.is_up", result.ok);
 
       if (result.ok) {
@@ -77,7 +78,21 @@ export const uptimeMonitor = schedules.task({
         metadata.set("status", "down");
         metadata.set("lastError", result.error ?? `HTTP ${result.status}`);
 
-        // TODO: ajouter notification Slack/email ici
+        // Notify Slack
+        await logger.trace("notify-slack", async () => {
+          await sendAlert({
+            channel: alertChannel,
+            title: "Site DOWN",
+            message: `*${url}* is unreachable`,
+            status: "error",
+            fields: {
+              "HTTP Status": `${result.status}`,
+              "Response Time": `${result.responseTime}ms`,
+              "Error": result.error ?? "N/A",
+            },
+          });
+          logger.info("Slack alert sent", { channel: alertChannel });
+        });
       }
     });
 
