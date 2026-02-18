@@ -90,10 +90,9 @@ Avec Claude Code, utilise les skills intégrées :
 ```
 /new-workflow <nom>          Crée un workflow + diagramme Mermaid
 /add-service <nom>           Crée un service pour une API externe
-/visualize <nom>             Met à jour le diagramme Mermaid d'un workflow
 ```
 
-Ou décris simplement ce que tu veux automatiser en français.
+Ou décris simplement ce que tu veux automatiser en français. Les diagrammes Mermaid sont mis à jour automatiquement à chaque modification de workflow.
 
 ## Stack technique
 
