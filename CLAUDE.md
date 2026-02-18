@@ -8,6 +8,10 @@ Plateforme d'automatisation Tiple, propulsee par Trigger.dev v4. Remplace N8N av
 - Deploy : `npx trigger.dev@latest deploy`
 - Install : `npm install`
 
+IMPORTANT : Quand l'utilisateur veut creer, modifier ou tester un workflow, rappelle-lui de lancer `npx trigger.dev@latest dev` s'il ne l'a pas deja fait. Le serveur local est indispensable pour que les workflows fonctionnent en dev.
+
+IMPORTANT : A chaque modification d'un workflow dans `src/trigger/`, tu DOIS mettre a jour le diagramme Mermaid correspondant dans `docs/workflows/`. Ne jamais oublier cette etape.
+
 ## Architecture
 
 - `src/trigger/` : Workflows (1 fichier = 1 workflow = 1 "flow" N8N)
