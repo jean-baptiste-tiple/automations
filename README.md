@@ -6,7 +6,7 @@ Plateforme d'automatisation Tiple. Remplace N8N par des workflows TypeScript ver
 
 - [Node.js](https://nodejs.org/) (v18+)
 - Un compte [Trigger.dev](https://cloud.trigger.dev)
-- Un compte [Slack](https://api.slack.com/apps) (pour les notifications)
+- Un compte [Slack](https://api.slack.com/apps) (pour les notifications du 1er flow de test/exemple)
 
 ## Installation
 
