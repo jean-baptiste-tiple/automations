@@ -14,21 +14,39 @@ Plateforme d'automatisation Tiple. Remplace N8N par des workflows TypeScript ver
 git clone <repo-url>
 cd automations
 npm install
-cp .env.example .env   # Puis remplir les valeurs
 ```
 
-## Configuration
+### 1. Créer un projet Trigger.dev
 
-### Variables d'environnement
+1. Crée un compte sur [cloud.trigger.dev](https://cloud.trigger.dev)
+2. Crée un nouveau projet
+3. Initialise le projet localement :
+
+```bash
+npx trigger.dev@latest init -p <ton-project-ref>
+```
+
+> Le `project ref` (ex: `proj_xxx`) se trouve dans le dashboard Trigger.dev > Settings.
+> Si tu clones ce repo, le projet est déjà configuré dans `trigger.config.ts`.
+
+### 2. Configurer les variables d'environnement
+
+```bash
+cp .env.example .env
+```
+
+Puis remplis les valeurs dans `.env` :
 
 | Variable | Description | Où la trouver |
 |----------|-------------|---------------|
 | `TRIGGER_SECRET_KEY` | Clé API Trigger.dev (dev local uniquement) | Dashboard > Settings > API Keys |
-| `SLACK_BOT_TOKEN` | Token du bot Slack | api.slack.com > OAuth & Permissions |
+| `SLACK_BOT_TOKEN` | Token du bot Slack | [api.slack.com](https://api.slack.com/apps) > OAuth & Permissions > Bot User OAuth Token |
 | `SLACK_ALERTS_CHANNEL` | Channel pour les alertes (ex: `#alerts`) | Slack |
 
-- **Dev** : fichier `.env` (gitignored)
-- **Prod** : dashboard Trigger.dev > Environment Variables
+**Pour le bot Slack** : crée une app sur [api.slack.com/apps](https://api.slack.com/apps), ajoute le scope `chat:write`, installe dans ton workspace, et invite le bot dans le channel (`/invite @NomDuBot`).
+
+- **Dev** : fichier `.env` (gitignored, jamais commité)
+- **Prod** : dashboard Trigger.dev > Environment Variables (mêmes clés, sans `TRIGGER_SECRET_KEY`)
 
 ## Utilisation
 
