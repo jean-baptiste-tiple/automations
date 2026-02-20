@@ -5,13 +5,16 @@
   "private": true,
   "scripts": {
     "dev": "npx trigger.dev@latest dev",
-    "deploy": "npx trigger.dev@latest deploy"
+    "deploy": "npx trigger.dev@latest deploy",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@trigger.dev/sdk": "4.3.3",
     "zod": "^3.24.0"
   },
   "devDependencies": {
-    "@trigger.dev/build": "4.3.3"
+    "@trigger.dev/build": "4.3.3",
+    "vitest": "^4.0.18"
   }
 }

@@ -39,6 +39,9 @@ export const TASK_NAME = schemaTask({
     // TODO: implementer la logique du workflow
     // Utiliser logger.trace() pour chaque etape importante
     // Utiliser les services de src/services/ pour les appels API
+    // IMPORTANT: pour les env vars, toujours valider avec throw, JAMAIS de fallback ??
+    // const channel = process.env.SLACK_CHANNEL;
+    // if (!channel) throw new Error("SLACK_CHANNEL is required");
 
     metadata.set("status", "completed");
     logger.info("Workflow completed");

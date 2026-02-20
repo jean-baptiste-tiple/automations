@@ -10,7 +10,8 @@ export const uptimeMonitor = schedules.task({
   },
   run: async (payload) => {
     const url = "https://www.tiple.io";
-    const alertChannel = process.env.SLACK_ALERTS_CHANNEL ?? "#alerts";
+    const alertChannel = process.env.SLACK_ALERTS_CHANNEL;
+    if (!alertChannel) throw new Error("SLACK_ALERTS_CHANNEL is required");
 
     logger.info("Uptime check started", { url });
     metadata.set("status", "checking");

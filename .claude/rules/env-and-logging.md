@@ -26,6 +26,17 @@ if (!apiKey) throw new Error("SLACK_BOT_TOKEN is required");
 
 Toujours verifier que la variable existe avant utilisation.
 
+### INTERDIT : fallback avec `??` ou `||`
+Ne JAMAIS utiliser de valeur par defaut pour une env var :
+```ts
+// INTERDIT - masque une mauvaise configuration
+const channel = process.env.SLACK_CHANNEL ?? "#alerts";
+
+// CORRECT - echoue explicitement si non configuree
+const channel = process.env.SLACK_CHANNEL;
+if (!channel) throw new Error("SLACK_CHANNEL is required");
+```
+
 ## Logging et Observabilite
 
 ### Niveaux de log

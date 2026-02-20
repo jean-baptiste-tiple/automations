@@ -4,6 +4,7 @@
 
 - `src/trigger/<workflow>.ts` : Un fichier = un workflow complet (equivalent d'un "flow" N8N)
 - `src/services/<service>.ts` : Un fichier = une API externe (equivalent d'un "node" N8N reutilisable)
+- `src/services/<service>.test.ts` : Tests unitaires du service (colocalises)
 - `docs/workflows/<workflow>.md` : Un fichier = un diagramme Mermaid du workflow
 
 ## Conventions de nommage

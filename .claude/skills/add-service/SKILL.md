@@ -75,6 +75,52 @@ export async function operationName(input: OperationInput): Promise<OperationRes
 - Remplacer `SERVICE_API_KEY` par la variable d'env appropriee
 - Adapter les URLs et headers a l'API reelle
 
-4. **Mettre a jour `.env.example`** pour ajouter les variables d'env requises par le nouveau service
+4. **Creer le fichier de tests** `src/services/$ARGUMENTS.test.ts` avec ce scaffold :
 
-5. **Afficher** un resume du service cree et un exemple d'utilisation dans un workflow
+```ts
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+// Mock @trigger.dev/sdk/v3 before importing the service
+vi.mock("@trigger.dev/sdk/v3", () => ({
+  retry: {
+    fetch: vi.fn(),
+  },
+}));
+
+import { retry } from "@trigger.dev/sdk/v3";
+import { operationName } from "./$ARGUMENTS";
+
+describe("$ARGUMENTS service", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    process.env.SERVICE_API_KEY = "test-key";
+  });
+
+  it("should throw if SERVICE_API_KEY is missing", async () => {
+    delete process.env.SERVICE_API_KEY;
+    await expect(operationName({ /* input */ })).rejects.toThrow("SERVICE_API_KEY is required");
+  });
+
+  it("should call API and return result on success", async () => {
+    const mockResponse = { ok: true, json: () => Promise.resolve({ /* result */ }) };
+    vi.mocked(retry.fetch).mockResolvedValue(mockResponse as any);
+
+    const result = await operationName({ /* input */ });
+    expect(result).toEqual({ /* expected */ });
+    expect(retry.fetch).toHaveBeenCalledOnce();
+  });
+
+  it("should throw on API error response", async () => {
+    const mockResponse = { ok: false, status: 400, statusText: "Bad Request" };
+    vi.mocked(retry.fetch).mockResolvedValue(mockResponse as any);
+
+    await expect(operationName({ /* input */ })).rejects.toThrow("Service API error");
+  });
+});
+```
+
+- Adapter le nom de l'env var et les types d'input/output
+
+5. **Mettre a jour `.env.example`** pour ajouter les variables d'env requises par le nouveau service
+
+6. **Afficher** un resume du service cree, ses tests, et un exemple d'utilisation dans un workflow

@@ -13,6 +13,6 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "include": ["src/**/*", "trigger.config.ts"],
+  "include": ["src/**/*", "trigger.config.ts", "vitest.config.ts"],
   "exclude": ["node_modules", ".trigger"]
 }
