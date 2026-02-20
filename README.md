@@ -66,7 +66,16 @@ npx trigger.dev@latest deploy
 
 Pousse les workflows sur le cloud Trigger.dev. Ils tournent 24/7 sans ton PC.
 
-### Test manuel
+### Tests unitaires
+
+```bash
+npm test              # Run unique
+npm run test:watch    # Mode watch
+```
+
+Les tests sont colocalisés avec les services : `src/services/slack.test.ts` à côté de `src/services/slack.ts`.
+
+### Test manuel (dashboard)
 
 Depuis le dashboard Trigger.dev : sélectionne une task → **Test** → lance.
 
@@ -74,11 +83,12 @@ Depuis le dashboard Trigger.dev : sélectionne une task → **Test** → lance.
 
 ```
 src/
-  trigger/          Workflows (1 fichier = 1 automatisation)
-  services/         Services réutilisables (1 fichier = 1 API externe)
+  trigger/              Workflows (1 fichier = 1 automatisation)
+  services/             Services réutilisables (1 fichier = 1 API externe)
+  services/*.test.ts    Tests unitaires (colocalisés)
 
 docs/
-  workflows/        Diagrammes Mermaid (1 par workflow, même nom)
+  workflows/            Diagrammes Mermaid (1 par workflow, même nom)
 ```
 
 ### Workflows (`src/trigger/`)
@@ -97,9 +107,10 @@ Chaque workflow a un diagramme Mermaid qui documente visuellement le flux. Insta
 
 ## Workflows actifs
 
-| Workflow | Description | Fréquence |
-|----------|-------------|-----------|
-| `uptime-monitor` | Vérifie que tiple.io est en ligne, alerte Slack si down | Toutes les heures |
+| Workflow | Type | Description |
+|----------|------|-------------|
+| `uptime-monitor` | Cron (toutes les heures) | Vérifie que tiple.io est en ligne, alerte Slack si down |
+| `notify-lead` | Webhook (schemaTask + Zod) | Reçoit un lead, valide le payload, notifie Slack |
 
 ## Créer un nouveau workflow
 
@@ -117,4 +128,5 @@ Ou décris simplement ce que tu veux automatiser en français. Les diagrammes Me
 - **Runtime** : [Trigger.dev](https://trigger.dev) v4 (cloud serverless)
 - **Langage** : TypeScript
 - **Validation** : Zod
+- **Tests** : Vitest
 - **AI Assistant** : Claude Code (skills + rules intégrées)
